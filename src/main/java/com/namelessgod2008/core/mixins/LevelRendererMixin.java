@@ -118,10 +118,10 @@ public class LevelRendererMixin {
 	 * 才能按 drawType 取到独立桶）；配置正是 SEPARATED。
 	 */
 	@Inject(
-			method	= "lambda$addMainPass$0",
+			method	= "method_62214",
 			at		= @At(
 					value	= "INVOKE",
-					target	= "Lnet/minecraft/client/renderer/feature/FeatureRenderDispatcher;renderSolidFeatures()V",
+					target	= "Lnet/minecraft/client/renderer/feature/FeatureRenderDispatcher;renderAllFeatures()V",
 					shift	= At.Shift.AFTER
 			)
 	)
@@ -131,11 +131,12 @@ public class LevelRendererMixin {
 		}
 
 		// 此处 isBeforeTranslucent 仍为 true → 几何写进 deferred 会读的 gbuffer 主纹理
-		drawAccelerated(LayerDrawType.OPAQUE);
+		// 1.21.11 只有 renderAllFeatures()，一次性绘制全部加速缓冲。
+		drawAccelerated(LayerDrawType.ALL);
 	}
 
 	@Inject(
-			method	= "lambda$addMainPass$0",
+			method	= "method_62214",
 			at		= @At(
 					value	= "INVOKE",
 					target	= "Lnet/minecraft/client/renderer/OutlineBufferSource;endOutlineBatch()V",
@@ -145,12 +146,6 @@ public class LevelRendererMixin {
 	private void drawAcceleratedTranslucent(CallbackInfo ci) {
 		if (!CoreFeature.isLoaded()) {
 			return;
-		}
-
-		// 此处 isBeforeTranslucent 已为 false → 与半透明语义一致。
-		// 非 SEPARATED 时上半透明时机已用 ALL 画完，这里不能再画一遍。
-		if (CoreFeature.getLayerStorageType() == LayerStorageType.SEPARATED) {
-			drawAccelerated(LayerDrawType.TRANSLUCENT);
 		}
 
 		// outline 缓冲有独立的 OUTLINE_TARGET，与主几何相位无关，放在最后即可

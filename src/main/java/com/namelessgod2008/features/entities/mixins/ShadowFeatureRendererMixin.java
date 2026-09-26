@@ -61,7 +61,7 @@ public class ShadowFeatureRendererMixin {
 	@Unique private static final Matrix3f SHADOW_NORMAL_MATRIX = new Matrix3f().identity();
 
 	@Inject(
-			method		= "renderTranslucent",
+			method		= "render",
 			at			= @At("HEAD"),
 			cancellable	= true
 	)

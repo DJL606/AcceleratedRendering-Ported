@@ -104,6 +104,9 @@ sourceSets {
 			exclude 'net/neoforged/neoforge/client/model/IQuadTransformer.java'
 			// 无引用的孤儿辅助类（26.1 TextureAtlasSprite/SpriteContents 构造器变化）
 			exclude 'net/neoforged/neoforge/client/textures/UnitTextureAtlasSprite.java'
+            exclude 'com/namelessgod2008/compat/vanilla/mixins/LivingEntityRendererMixin.java'
+            exclude 'com/namelessgod2008/compat/vanilla/mixins/BannerRendererMixin.java'
+            exclude 'com/namelessgod2008/compat/vanilla/mixins/FeatureRenderDispatcherMixin.java'
 		}
 	}
 }

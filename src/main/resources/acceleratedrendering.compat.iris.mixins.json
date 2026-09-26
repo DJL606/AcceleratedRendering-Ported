@@ -1,0 +1,33 @@
+{
+  "required": false,
+  "refmap": "acceleratedrendering-refmap.json",
+  "minVersion": "0.8",
+  "package": "com.namelessgod2008.compat.iris.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.namelessgod2008.compat.iris.mixins.plugin.IrisCompatMixinPlugin",
+  "client": [
+    "acceleratedrendering.AcceleratedBufferBuilderMixin",
+    "acceleratedrendering.AcceleratedBufferSourceMixin",
+    "acceleratedrendering.AcceleratedRenderingModEntryMixin",
+    "acceleratedrendering.CoreBuffersProviderMixin",
+    "acceleratedrendering.CulledMeshCollectorMixin",
+    "acceleratedrendering.IBufferEnvironmentPresetsMixin",
+    "acceleratedrendering.MeshUploaderMixin",
+    "acceleratedrendering.MeshUploadingProgramDispatcherMixin",
+    "acceleratedrendering.RenderTypeUtilsMixin",
+    "acceleratedrendering.SimpleMeshCollectorMixin",
+    "acceleratedrendering.SimpleMeshInfoCacheMixin",
+    "acceleratedrendering.UnsafeMemoryMeshInfoCacheMixin",
+    "iris.BufferSourceWrapperMixin",
+    "iris.HandRendererMixin",
+    "iris.ModelToEntityVertexSerializerMixin",
+    "iris.ShadowRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "acceleratedrendering.FlattenVarHandleMeshInfoCacheMixin",
+    "acceleratedrendering.MeshInfoMixin"
+  ]
+}

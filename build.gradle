@@ -1,0 +1,166 @@
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.mod_id
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/acceleratedrendering.accesswidener")
+}
+
+repositories {
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = "https://maven.ladysnake.org/releases"
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
+        name = "NeoForged"
+        url = "https://maven.neoforged.net/releases"
+    }
+}
+
+sourceSets {
+	main {
+		java {
+			// 物品加速：已加回核心（BakedQuad 加速、网格缓存、动态面缓存）。
+			// 未加回的部分：
+			//  - GUI 相关（gui/**、mixins/gui/**）—— 本次范围外
+			//  - 依赖 26.1 已移除 API 的旧文件（BakedModel 体系、ItemRenderer、ModelBlockRenderer）
+			exclude 'com/namelessgod2008/features/items/gui/**'
+			exclude 'com/namelessgod2008/features/items/mixins/gui/**'
+			exclude 'com/namelessgod2008/features/items/BakedModelExtension.java'
+			exclude 'com/namelessgod2008/features/items/mixins/ItemRendererMixin.java'
+			exclude 'com/namelessgod2008/features/items/mixins/ModelBlockRendererMixin.java'
+			exclude 'com/namelessgod2008/features/items/mixins/models/**'
+			exclude 'com/namelessgod2008/features/items/mixins/accessors/**'
+			// 依赖 26.1 已移除的 BlockColor（改为 BlockTintSource）；本加速路径用
+			// TintLayerColors（来自 ItemSubmit.tintLayers），不需方块着色体系
+			exclude 'com/namelessgod2008/features/items/colors/BlockLayerColors.java'
+			exclude 'com/namelessgod2008/features/items/colors/ColorHelper.java'
+			exclude 'com/namelessgod2008/features/items/colors/EmptyBlockColor.java'
+			exclude 'com/namelessgod2008/features/items/colors/ItemLayerColors.java'
+			// 依赖已移除的 BakedModel 体系
+			exclude 'com/namelessgod2008/features/items/IAcceleratedBakedModel.java'
+			exclude 'com/namelessgod2008/features/filter/mixins/**'
+			exclude 'com/namelessgod2008/features/filter/FilterFeature.java'
+			exclude 'com/namelessgod2008/features/filter/FilterIMC.java'
+			exclude 'com/namelessgod2008/features/filter/ItemStackFilterStack.java'
+			// FilterType 是纯枚举，FeatureConfig 依赖它，保留
+			exclude 'com/namelessgod2008/features/geckolib/**'
+			exclude 'com/namelessgod2008/features/ftb/**'
+			exclude 'com/namelessgod2008/features/modernui/**'
+			exclude 'com/namelessgod2008/features/text/**'
+			exclude 'com/namelessgod2008/features/tlm/**'
+			exclude 'com/namelessgod2008/features/create/**'
+			exclude 'com/namelessgod2008/features/emf/**'
+			exclude 'com/namelessgod2008/features/simplebedrockmodel/**'
+			exclude 'com/namelessgod2008/features/entities/mixins/InventoryScreenMixin.java'
+			// 未注册的孤儿 mixin（依赖 items/text）
+			exclude 'com/namelessgod2008/core/mixins/compatibility/ParticleEngineMixin.java'
+			// 26.1 / Iris 1.11.4：已修复适配（Iris 移除了 batchedentityrendering 包，
+			// 相关 mixin 已按新架构重写；见 compat/iris 的类注释），故不再排除。
+			exclude 'com/namelessgod2008/compat/immediatelyfast/**'
+			exclude 'com/namelessgod2008/compat/tweakeroo/**'
+			exclude 'com/namelessgod2008/compat/xaero/**'
+			exclude 'com/namelessgod2008/compat/rei/**'
+			exclude 'com/namelessgod2008/compat/tweakmore/**'
+			exclude 'com/namelessgod2008/compat/trinkets/**'
+			exclude 'com/namelessgod2008/compat/sophisticated/**'
+			exclude 'com/namelessgod2008/compat/forgeconfigapiport/**'
+			// 26.1 移除 BakedQuad/GuiGraphics 等，这些 Forge 物品/配置辅助类无法编译。
+			// 配置界面改用 forgeconfigapiport 26.1.5 自带的 ConfigurationScreen（见 ARModMenu）。
+			exclude 'net/neoforged/neoforge/client/gui/ConfigScreen.java'
+			exclude 'net/neoforged/neoforge/client/model/IQuadTransformer.java'
+			// 无引用的孤儿辅助类（26.1 TextureAtlasSprite/SpriteContents 构造器变化）
+			exclude 'net/neoforged/neoforge/client/textures/UnitTextureAtlasSprite.java'
+		}
+	}
+}
+
+
+processResources {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            mod_id           : mod_id,
+            mod_name         : mod_name,
+            mod_license      : mod_license,
+            mod_version      : mod_version,
+            mod_authors      : mod_authors,
+            mod_description  : mod_description
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching("fabric.mod.json") {
+        expand replaceProperties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+    inputs.property "archivesName", project.base.archivesName
+    from("LICENSE") {
+        rename { "${it}_${inputs.properties.archivesName}" }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraft:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    modImplementation "maven.modrinth:modmenu:${project.modmenu_version}"
+    modImplementation "maven.modrinth:forge-config-api-port:${project.forgeconfig_version}"
+
+    modCompileOnly "maven.modrinth:sodium:${project.sodium_version}"
+    modCompileOnly "maven.modrinth:iris:${project.iris_version}"
+    modCompileOnly "maven.modrinth:geckolib:${project.geckolib_version}"
+    modCompileOnly "maven.modrinth:immediatelyfast:${project.immediatelyfast_version}"
+    modCompileOnly "maven.modrinth:trinkets-canary:${project.trinkets_version}"
+
+    compileOnly("com.moulberry:mixinconstraints:1.0.9")
+    compileOnly("org.projectlombok:lombok:1.18.40")
+    annotationProcessor("org.projectlombok:lombok:1.18.40")
+
+    include implementation("net.neoforged:bus:8.0.5")
+}

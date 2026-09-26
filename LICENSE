@@ -1,7 +1,40 @@
+AcceleratedRendering-Ported — Licensing
+
+This project is a Fabric port of "Accelerated Rendering" by Argon4W.
+
+1. Original mod: Accelerated Rendering
+   Copyright (c) Argon4W
+   Licensed under the MIT License.
+   The original code, and modified copies of it, remain under the MIT License.
+   The full MIT license text is included below.
+
+2. Fabric port contributions
+   Copyright (c) 2026 DJL606, namelessgod2008
+   Licensed under the Creative Commons Attribution-NonCommercial 4.0
+   International License (CC BY-NC 4.0).
+
+   Full license text:
+   https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+   Human-readable summary:
+   https://creativecommons.org/licenses/by-nc/4.0/
+
+   You are free to share and adapt the port contributions for non-commercial
+   purposes, provided that appropriate credit is given.
+
+3. Combined work
+   This repository contains MIT-licensed code. The MIT License continues to
+   apply to the original code. The CC BY-NC 4.0 license applies only to the new
+   port contributions. Nothing in the CC BY-NC 4.0 license restricts the rights
+   granted to you under the MIT License for the original code.
+
+--------------------------------------------------------------------
+MIT License (original Accelerated Rendering)
+--------------------------------------------------------------------
+
 MIT License
 
-Copyright (c) 2024 Argon4W (original AcceleratedRendering)
-Copyright (c) 2026 DJL606, namelessgod2008 (Fabric port)
+Copyright (c) Argon4W
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

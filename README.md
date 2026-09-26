@@ -61,7 +61,12 @@ Fabric **1.21.11** port of **Accelerated Rendering** — fast entity rendering a
 
 ### 许可证
 
-MIT License，详见 [LICENSE](LICENSE)。
+本项目采用双重许可：
+
+- 原模组 Accelerated Rendering（Copyright Argon4W）：MIT License
+- Fabric 移植新增部分（Copyright DJL606, namelessgod2008）：CC BY-NC 4.0（非商业使用）
+
+详见 [LICENSE](LICENSE)。
 
 ---
 
@@ -118,4 +123,9 @@ Optional:
 
 ### License
 
-MIT License. See [LICENSE](LICENSE).
+This project uses dual licensing:
+
+- Original mod Accelerated Rendering (Copyright Argon4W): MIT License
+- Fabric port contributions (Copyright DJL606, namelessgod2008): CC BY-NC 4.0 (non-commercial)
+
+See [LICENSE](LICENSE) for details.

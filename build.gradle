@@ -166,4 +166,6 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.40")
 
     include implementation("net.neoforged:bus:8.0.5")
+    include implementation("com.electronwill.night-config:core:3.8.3")
+    include implementation("com.electronwill.night-config:toml:3.8.3")
 }

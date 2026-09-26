@@ -1,5 +1,6 @@
 package com.namelessgod2008.compat.iris.mixins.plugin;
 
+import com.namelessgod2008.FabricUtils;
 import com.namelessgod2008.compat.AbstractCompatMixinPlugin;
 import com.namelessgod2008.compat.iris.IrisGbufferBridge;
 import com.namelessgod2008.core.backends.GbufferBridge;
@@ -24,6 +25,9 @@ public class IrisCompatMixinPlugin extends AbstractCompatMixinPlugin {
 	public void onLoad(String mixinPackage) {
 		super.onLoad(mixinPackage);
 
-		GbufferBridge.register(IrisGbufferBridge.INSTANCE);
+		// 未安装 Iris 时绝不能登记桥接实现，否则运行期解析 Iris 类会 NoClassDefFoundError。
+		if (FabricUtils.modExists("iris")) {
+			GbufferBridge.register(IrisGbufferBridge.INSTANCE);
+		}
 	}
 }
